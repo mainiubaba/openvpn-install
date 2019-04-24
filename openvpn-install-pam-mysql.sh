@@ -305,9 +305,17 @@ user nobody
 group $GROUPNAME
 persist-key
 persist-tun
-status openvpn-status.log
+status openvpn-status-udp.log
 verb 3
-crl-verify crl.pem" >> /etc/openvpn/server.conf
+crl-verify crl.pem
+plugin openvpn-auth-pam.so openvpn
+client-cert-not-required
+username-as-common-name
+reneg-sec 0
+mode server
+comp-lzo
+max-clients 1025
+" >> /etc/openvpn/server.conf
 	# Enable net.ipv4.ip_forward for the system
 	echo 'net.ipv4.ip_forward=1' > /etc/sysctl.d/30-openvpn-forward.conf
 	# Enable without waiting for a reboot or service restart
@@ -391,7 +399,10 @@ auth SHA512
 cipher AES-256-CBC
 setenv opt block-outside-dns
 key-direction 1
-verb 3" > /etc/openvpn/client-common.txt
+verb 3
+comp-lzo
+auth-user-pass
+" > /etc/openvpn/client-common.txt
 	# Generates the custom client.ovpn
 	newclient "$CLIENT"
 	echo
