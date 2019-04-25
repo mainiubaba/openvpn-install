@@ -35,7 +35,7 @@ else
 fi
 
 newclient () {
-	local CLIENT_OVPN_PATH=/etc/openvpn/client/client.ovpn
+	local CLIENT_OVPN_PATH=/etc/openvpn/client.ovpn
 	# Generates the custom client.ovpn
 	cp /etc/openvpn/client-common.txt ${CLIENT_OVPN_PATH}
 	echo "<ca>" >> ${CLIENT_OVPN_PATH}
