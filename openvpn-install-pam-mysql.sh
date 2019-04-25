@@ -4,8 +4,6 @@
 #
 # Copyright (c) 2013 Nyr. Released under the MIT License.
 
-echo ${TERM}
-export TERM=${TERM}
 # Detect Debian users running the script with "sh" instead of bash
 if readlink /proc/$$/exe | grep -q "dash"; then
 	echo "This script needs to be run with bash, not sh"
@@ -196,10 +194,12 @@ else
 		PROTOCOL=tcp
 		;;
 	esac
+	PROTOCOL=${PROTOCOL:-udp}
 	echo
 	echo "What port do you want OpenVPN listening to?"
 	read -p "Port: " -e -i 1194 PORT
 	echo
+	PORT=${PORT:-1194}
 	echo "Which DNS do you want to use with the VPN?"
 	echo "   1) Current system resolvers"
 	echo "   2) 1.1.1.1"
@@ -208,10 +208,12 @@ else
 	echo "   5) Verisign"
 	read -p "DNS [1-5]: " -e -i 1 DNS
 	echo
+	DNS=${DNS:-1}
 	echo "Finally, tell me your name for the client certificate."
 	echo "Please, use one word only, no special characters."
 	read -p "Client name: " -e -i client CLIENT
 	echo
+	CLIENT=${CLIENT:-client}
 	echo "Okay, that was all I needed. We are ready to set up your OpenVPN server now."
 	read -n1 -r -p "Press any key to continue..."
 	if [[ "$OS" = 'debian' ]]; then
