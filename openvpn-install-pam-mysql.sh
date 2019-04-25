@@ -35,23 +35,25 @@ else
 fi
 
 newclient () {
+	local CLIENT_OVPN_PATH=/etc/openvpn/client/client.ovpn
 	# Generates the custom client.ovpn
-	cp /etc/openvpn/client-common.txt ~/$1.ovpn
-	echo "<ca>" >> ~/$1.ovpn
-	cat /etc/openvpn/easy-rsa/pki/ca.crt >> ~/$1.ovpn
-	echo "</ca>" >> ~/$1.ovpn
-	echo "<cert>" >> ~/$1.ovpn
-	sed -ne '/BEGIN CERTIFICATE/,$ p' /etc/openvpn/easy-rsa/pki/issued/$1.crt >> ~/$1.ovpn
-	echo "</cert>" >> ~/$1.ovpn
-	echo "<key>" >> ~/$1.ovpn
-	cat /etc/openvpn/easy-rsa/pki/private/$1.key >> ~/$1.ovpn
-	echo "</key>" >> ~/$1.ovpn
-	echo "<tls-auth>" >> ~/$1.ovpn
-	sed -ne '/BEGIN OpenVPN Static key/,$ p' /etc/openvpn/ta.key >> ~/$1.ovpn
-	echo "</tls-auth>" >> ~/$1.ovpn
+	cp /etc/openvpn/client-common.txt ${CLIENT_OVPN_PATH}
+	echo "<ca>" >> ${CLIENT_OVPN_PATH}
+	cat /etc/openvpn/easy-rsa/pki/ca.crt >> ${CLIENT_OVPN_PATH}
+	echo "</ca>" >> ${CLIENT_OVPN_PATH}
+	echo "<cert>" >> ${CLIENT_OVPN_PATH}
+	sed -ne '/BEGIN CERTIFICATE/,$ p' /etc/openvpn/easy-rsa/pki/issued/$1.crt >> ${CLIENT_OVPN_PATH}
+	echo "</cert>" >> ${CLIENT_OVPN_PATH}
+	echo "<key>" >> ${CLIENT_OVPN_PATH}
+	cat /etc/openvpn/easy-rsa/pki/private/$1.key >> ${CLIENT_OVPN_PATH}
+	echo "</key>" >> ${CLIENT_OVPN_PATH}
+	echo "<tls-auth>" >> ${CLIENT_OVPN_PATH}
+	sed -ne '/BEGIN OpenVPN Static key/,$ p' /etc/openvpn/ta.key >> ${CLIENT_OVPN_PATH}
+	echo "</tls-auth>" >> ${CLIENT_OVPN_PATH}
 }
 
 if [[ -e /etc/openvpn/server.conf ]]; then
+	exit 0
 	while :
 	do
 	clear
@@ -224,9 +226,10 @@ else
 		apt-get update
 		apt-get install openvpn iptables openssl ca-certificates -y
 	else
+		:
 		# Else, the distro is CentOS
-		yum install epel-release -y
-		yum install openvpn iptables openssl ca-certificates -y
+		# yum install epel-release -y
+		# yum install openvpn iptables openssl ca-certificates -y
 	fi
 	# Get easy-rsa
 	EASYRSAURL='https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz'
