@@ -62,6 +62,11 @@ envDocker (){
 	sed -i "s/host=mysql/host=${DB_SERVER}/g" /etc/pam.d/openvpn
 }
 
+case ${MODE} in
+  docker)envDocker;;
+  *):;;
+esac
+
 if [[ -e /etc/openvpn/server.conf ]]; then
 	exit 0
 	while :
@@ -434,7 +439,3 @@ auth-user-pass
 	echo "If you want to add more clients, you simply need to run this script again!"
 fi
 
-case ${MODE} in
-  docker)envDocker;;
-  *):;;
-esac
