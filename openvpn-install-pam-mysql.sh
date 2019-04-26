@@ -5,6 +5,9 @@
 # Copyright (c) 2013 Nyr. Released under the MIT License.
 
 # Detect Debian users running the script with "sh" instead of bash
+
+MODE=${1}
+
 if readlink /proc/$$/exe | grep -q "dash"; then
 	echo "This script needs to be run with bash, not sh"
 	exit
@@ -50,6 +53,12 @@ newclient () {
 	echo "<tls-auth>" >> ${CLIENT_OVPN_PATH}
 	sed -ne '/BEGIN OpenVPN Static key/,$ p' /etc/openvpn/ta.key >> ${CLIENT_OVPN_PATH}
 	echo "</tls-auth>" >> ${CLIENT_OVPN_PATH}
+}
+
+# Using this method, you can dynamically modify the MySQL database address of OpenVPN(/etc/pam.d/openvpn)
+envDocker (){
+	# dynamically modify
+	sed -i "s/host=mysql/host=${DB_SERVER}/g" /etc/pam.d/openvpn
 }
 
 if [[ -e /etc/openvpn/server.conf ]]; then
@@ -423,3 +432,8 @@ auth-user-pass
 	echo "Your client configuration is available at:" ~/"$CLIENT.ovpn"
 	echo "If you want to add more clients, you simply need to run this script again!"
 fi
+
+case ${MODE} in
+  docker)envDocker;;
+  *):;;
+esac
