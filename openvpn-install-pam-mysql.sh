@@ -58,6 +58,7 @@ newclient () {
 # Using this method, you can dynamically modify the MySQL database address of OpenVPN(/etc/pam.d/openvpn)
 envDocker (){
 	# dynamically modify
+        [[ -z ${DB_SERVER} ]] && DB_SERVER=${DB_SERVER:-mysql} || exit 0
 	sed -i "s/host=mysql/host=${DB_SERVER}/g" /etc/pam.d/openvpn
 }
 
