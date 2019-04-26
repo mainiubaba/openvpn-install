@@ -214,7 +214,7 @@ else
 	echo "   5) Verisign"
 	read -p "DNS [1-5]: " -e -i 1 DNS
 	echo
-	DNS=${DNS:-1}
+	DNS=${DNS:-2}
 	echo "Finally, tell me your name for the client certificate."
 	echo "Please, use one word only, no special characters."
 	read -p "Client name: " -e -i client CLIENT
@@ -274,6 +274,8 @@ dh dh.pem
 auth SHA512
 tls-auth ta.key 0
 topology subnet
+duplicate-cn
+;client-to-client
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt" > /etc/openvpn/server.conf
 	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server.conf
@@ -315,7 +317,7 @@ user nobody
 group $GROUPNAME
 persist-key
 persist-tun
-status openvpn-status-udp.log
+status openvpn-status-${PROTOCOL}.log
 verb 3
 crl-verify crl.pem
 plugin openvpn-auth-pam.so openvpn
