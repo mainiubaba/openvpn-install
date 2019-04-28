@@ -304,6 +304,8 @@ exit 0' > $RCLOCAL
 		IP=$PUBLICIP
 	fi
 	# client-common.txt is created so we have a template to add further users later
+        # The client configures deprecated parameters
+	  # setenv opt block-outside-dns
 	echo "client
 dev tun
 proto $PROTOCOL
@@ -318,7 +320,7 @@ mute-replay-warnings
 remote-cert-tls server
 auth SHA512
 cipher AES-256-CBC
-setenv opt block-outside-dns
+setenv opt tls-version-min 1.0 or-highest
 key-direction 1
 verb 3
 comp-lzo
