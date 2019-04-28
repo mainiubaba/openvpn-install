@@ -229,7 +229,7 @@ status openvpn-status-${PROTOCOL}.log
 verb 3
 crl-verify crl.pem
 plugin openvpn-auth-pam.so openvpn
-client-cert-not-required
+;client-cert-not-required
 username-as-common-name
 reneg-sec 0
 comp-lzo
