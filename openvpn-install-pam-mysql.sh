@@ -182,6 +182,7 @@ topology subnet
 duplicate-cn
 ;client-to-client
 server 172.27.224.0 255.255.255.0
+push "route 10.20.30.0 255.255.255.0"
 ifconfig-pool-persist ipp.txt" > /etc/openvpn/server.conf
 	# If enabled, all DNS on the client side will be redirected to the VPN, including the web browser
 	# echo ';push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server.conf
